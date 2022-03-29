@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, Radio, RadioGroup, TextInput } from '@mantine/core';
+import { Container, Button, Radio, RadioGroup, TextInput, Title } from '@mantine/core';
 
 import { algorithms } from 'src/constants';
 import { ResultState } from 'src/types';
@@ -27,13 +27,14 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>SearchAlgo</h1>
+    <Container size='md'>
+      <Title order={1}>SearchAlgo</Title>
       <form onSubmit={handleSubmit}>
         <TextInput
           value={searchValue}
           onChange={handleInputChange}
           placeholder='Search for a word'
+          radius='xl'
           required
         />
         <RadioGroup value={radioValue} onChange={handleRadioChange}>
@@ -51,7 +52,7 @@ const App = () => {
           </h3>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

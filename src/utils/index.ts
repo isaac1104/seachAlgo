@@ -4,49 +4,37 @@ import { AlgorithmsState, ResultState } from 'src/types';
 
 const algorithms: AlgorithmsState = {
   linear: (target: string) => {
-    const resultObj: ResultState = { word: '', count: 0, executionTime: 0 };
     let count = 0;
-
-    const startTime = performance.now();
 
     for (let i = 0; i < words.length; i++) {
       if (words[i] === target) {
-        const endTime = performance.now();
-
         return {
-          ...resultObj,
           count,
           word: target,
-          executionTime: (endTime - startTime),
         };
       } else {
         count++;
       }
     }
 
-    return null;
+    return {
+      word: '',
+      count: 0,
+    };
   },
   binary: (target: string) => {
-    const resultObj: ResultState = { word: '', count: 0, executionTime: 0 };
-
     let start = 0;
     let end = words.length - 1;
     let count = 0;
-
-    const startTime = performance.now();
 
     while (start <= end) {
       let middle = Math.floor((start + end) / 2);
       count++;
 
       if (words[middle] === target) {
-        const endTime = performance.now();
-
         return {
-          ...resultObj,
           count,
           word: target,
-          executionTime: (endTime - startTime),
         };
       } else if (words[middle] < target) {
         start = middle + 1;
@@ -55,12 +43,21 @@ const algorithms: AlgorithmsState = {
       }
     }
 
-    return null;
+    return {
+      word: '',
+      count: 0,
+    };
   },
 };
 
-const performSearch = (target: string, algorithm: string) => {
-  return algorithms[algorithm](target);
+const performSearch = (target: string, algorithm: string): ResultState => {
+  const startTime = performance.now();
+  const result = algorithms[algorithm](target);
+  const endTime = performance.now();
+  return {
+    ...result,
+    executionTime: endTime - startTime,
+  };
 };
 
 export default performSearch;

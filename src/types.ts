@@ -1,8 +1,13 @@
-export type AlgorithmsState = {
-  [x: string]: (target: string) => ResultState | null;
+interface Algorithm {
+  count: number;
+  word: string;
+}
+
+export interface AlgorithmsState {
+  [x: string]: (target: string) => Algorithm;
 };
 
-export type ResultState = {
+export interface ResultState {
   word: string;
   count: number;
   executionTime: number;
