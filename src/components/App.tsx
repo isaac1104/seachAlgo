@@ -1,14 +1,21 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Container, Radio, RadioGroup, TextInput, Title } from '@mantine/core';
+import {
+  Container,
+  Radio,
+  RadioGroup,
+  Text,
+  TextInput,
+  Title,
+} from '@mantine/core';
 
-import { algorithms } from 'src/constants';
-import { ResultState } from 'src/types';
+import { radioGroupItems } from 'src/constants';
+import { Result } from 'src/types';
 import performSearch from 'src/utils';
 
 const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [radioValue, setRadioValue] = useState('linear');
-  const [result, setResult] = useState<ResultState | null>(null);
+  const [result, setResult] = useState<Result | null>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -28,8 +35,8 @@ const App = () => {
 
   return (
     <Container size='md'>
-      <Title align='center' order={1}>
-        SearchAlgo
+      <Title align='center' order={1} style={{ marginBottom: 16 }}>
+        🔎 SearchAlgo
       </Title>
       <form onSubmit={handleSubmit}>
         <TextInput
@@ -37,21 +44,36 @@ const App = () => {
           onChange={handleInputChange}
           placeholder='Search for a word'
           radius='xl'
+          style={{ marginBottom: 16 }}
           required
         />
-        <RadioGroup value={radioValue} onChange={handleRadioChange}>
-          {algorithms.map(({ id, label, value }) => (
+        <RadioGroup
+          value={radioValue}
+          onChange={handleRadioChange}
+          style={{ marginBottom: 16 }}
+          spacing='xs'
+          size='sm'
+        >
+          {Object.values(radioGroupItems).map(({ id, label, value }) => (
             <Radio key={id} label={label} value={value} />
           ))}
         </RadioGroup>
       </form>
+      <Text style={{ marginBottom: 16 }}>
+        {radioGroupItems[radioValue].description}
+      </Text>
       {result && (
-        <div>
-          <h3>
-            {radioValue} algorithm took {result?.count} tries and{' '}
-            {result?.executionTime}ms to find {result?.word}
-          </h3>
-        </div>
+        <Title order={5}>
+          Result:{' '}
+          <Text color='blue' inherit component='span'>
+            {result.count}{' '}
+          </Text>
+          tries and{' '}
+          <Text color='blue' inherit component='span'>
+            {result.executionTime}{' '}
+          </Text>
+          ms
+        </Title>
       )}
     </Container>
   );

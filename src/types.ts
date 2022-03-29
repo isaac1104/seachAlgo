@@ -3,12 +3,19 @@ interface Algorithm {
   word: string;
 }
 
-export interface AlgorithmsState {
+export interface Algorithms {
   [x: string]: (target: string) => Algorithm;
-};
+}
 
-export interface ResultState {
+export interface Result {
   word: string;
   count: number;
   executionTime: number;
-};
+}
+
+export interface RadioGroupItems {
+  id: number;
+  label: string;
+  value: string;
+  description: string;
+}

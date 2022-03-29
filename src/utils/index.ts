@@ -1,8 +1,9 @@
 import words from 'an-array-of-english-words';
 
-import { AlgorithmsState, ResultState } from 'src/types';
+import { defaultValue } from 'src/constants';
+import { Algorithms, Result } from 'src/types';
 
-const algorithms: AlgorithmsState = {
+const algorithms: Algorithms = {
   linear: (target: string) => {
     let count = 0;
 
@@ -17,10 +18,7 @@ const algorithms: AlgorithmsState = {
       }
     }
 
-    return {
-      word: '',
-      count: 0,
-    };
+    return defaultValue;
   },
   binary: (target: string) => {
     let start = 0;
@@ -43,14 +41,49 @@ const algorithms: AlgorithmsState = {
       }
     }
 
-    return {
-      word: '',
-      count: 0,
-    };
+    return defaultValue;
+  },
+  jump: (target: string) => {
+    let length = words.length;
+    let step = Math.floor(Math.sqrt(length));
+    let blockStart = 0;
+    let currentStep = step;
+    let count = 0;
+
+    while (words[Math.min(currentStep, length) - 1] < target) {
+      count++;
+      blockStart = currentStep;
+      currentStep += step;
+
+      if (blockStart >= length) {
+        return defaultValue;
+      }
+    }
+
+    while (words[blockStart] < target) {
+      count++;
+      blockStart++;
+
+      if (blockStart === Math.min(currentStep, length)) {
+        return defaultValue;
+      }
+    }
+
+    if (words[blockStart] === target) {
+      return {
+        word: target,
+        count: count,
+      };
+    } else {
+      return {
+        word: '',
+        count: 0,
+      };
+    }
   },
 };
 
-const performSearch = (target: string, algorithm: string): ResultState => {
+const performSearch = (target: string, algorithm: string): Result => {
   const startTime = performance.now();
   const result = algorithms[algorithm](target);
   const endTime = performance.now();
